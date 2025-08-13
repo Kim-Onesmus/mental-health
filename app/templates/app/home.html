@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mental Health & Rehab Dashboard</title>
+    <title>Mental Health & Rehab Dashboard (Demo)</title>
     <meta name="description" content="Dashboard to explore mental health facilities and rehabilitation centers." />
     <meta name="keywords" content="mental health, rehab, facility dashboard, maps, filters, IDL" />
     <meta name="author" content="IDL Team" />
@@ -25,7 +26,7 @@
         <div class="container mx-auto px-4 h-full flex items-center justify-between relative">
             <a href="/" class="flex items-center space-x-2">
                 <!-- <img src="/logo.png" alt="Logo" class="h-8 w-auto" /> -->
-                <h1 class="text-xl font-bold tracking-wide">Mental Health & Rehab Dashboard</h1>
+                <h1 class="text-xl font-bold tracking-wide">Mental Health & Rehab Dashboard (Demo)</h1>
             </a>
             <div class="flex items-center space-x-4 md:hidden">
                 <button id="sidebarToggle" class="text-2xl p-2 rounded-md focus:outline-none focus:ring-2"
@@ -80,8 +81,8 @@
 
     <!-- Main Content -->
     <main class="flex-1 md:ml-64 pt-16 min-h-screen">
-        <div class="container mx-auto p-4">
-            <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="container mx-auto p-2">
+            <div class="bg-white rounded-lg shadow-md p-2">
                 <!-- <h2 class="text-xl font-semibold mb-6 text-gray-800">Mental Health & Rehabilitation Centers Map</h2> -->
                 <div id="map" class="w-full z-0 rounded-lg"></div>
                 <div id="locationStatus" class="mt-4 text-gray-600 text-center">Checking location...</div>
@@ -89,140 +90,6 @@
         </div>
     </main>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<!-- Leaflet Routing Machine CSS and JS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
-<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
-
-    <script>
-        const map = L.map('map').setView([0.0236, 37.9062], 6);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-        const dummyFacilities = [
-                {
-                    name: 'Kisumu Mental Health', lat: -0.0917, lng: 34.768, type: 'mental',
-                    county: 'Kisumu', subcounty: 'Kisumu Central', constituency: 'Kisumu Central', ward: 'Railways'
-                },
-                {
-                    name: 'Kakamega Wellness Centre', lat: 0.2827, lng: 34.7519, type: 'rehab',
-                    county: 'Kakamega', subcounty: 'Lurambi', constituency: 'Lurambi', ward: 'Butsotso East'
-                },
-                {
-                    name: 'Eldoret Rehab Unit', lat: 0.5143, lng: 35.2698, type: 'rehab',
-                    county: 'Uasin Gishu', subcounty: 'Turbo', constituency: 'Turbo', ward: 'Kamagut'
-                },
-                {
-                    name: 'Bungoma Mental Clinic', lat: 0.568, lng: 34.5584, type: 'mental',
-                    county: 'Bungoma', subcounty: 'Kanduyi', constituency: 'Kanduyi', ward: 'Township'
-                },
-                {
-                    name: 'Siaya Mental Support', lat: 0.0612, lng: 34.2885, type: 'mental',
-                    county: 'Siaya', subcounty: 'Siaya', constituency: 'Alego Usonga', ward: 'Siaya Township'
-                },
-                {
-                    name: 'Vihiga Recovery Center', lat: 0.0685, lng: 34.7281, type: 'rehab',
-                    county: 'Vihiga', subcounty: 'Vihiga', constituency: 'Vihiga', ward: 'Lugaga-Wamuluma'
-                },
-                {
-                    name: 'Busia Psychiatric Unit', lat: 0.4601, lng: 34.1118, type: 'mental',
-                    county: 'Busia', subcounty: 'Matayos', constituency: 'Matayos', ward: 'Matayos South'
-                },
-                {
-                    name: 'Homa Bay Rehab & Recovery', lat: -0.5274, lng: 34.4571, type: 'rehab',
-                    county: 'Homa Bay', subcounty: 'Homa Bay', constituency: 'Homa Bay Town', ward: 'Homa Bay Central'
-                },
-                {
-                    name: 'Migori Wellness Facility', lat: -1.0634, lng: 34.4731, type: 'mental',
-                    county: 'Migori', subcounty: 'Suna East', constituency: 'Suna East', ward: 'Suna Ragana'
-                },
-                {
-                    name: 'Rongo Mental Health Centre', lat: -0.7354, lng: 34.6096, type: 'mental',
-                    county: 'Migori', subcounty: 'Rongo', constituency: 'Rongo', ward: 'North Kamagambo'
-                },
-                {
-                    name: 'Kitere Rehab Centre', lat: -0.7450, lng: 34.6190, type: 'rehab',
-                    county: 'Migori', subcounty: 'Rongo', constituency: 'Rongo', ward: 'Central Kamagambo'
-                },
-                {
-                    name: 'Koderobara Wellness Unit', lat: -0.7552, lng: 34.5905, type: 'mental',
-                    county: 'Migori', subcounty: 'Rongo', constituency: 'Rongo', ward: 'East Kamagambo'
-                }
-            ];
-
-        dummyFacilities.forEach(facility => {
-            L.marker([facility.lat, facility.lng]).addTo(map)
-                .bindPopup(`<strong>${facility.name}</strong>`);
-        });
-
-        const youAreHereIcon = L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-        });
-
-        function getDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                map.setView([latitude, longitude], 10);
-
-                // Add user marker
-                L.marker([latitude, longitude], { icon: youAreHereIcon }).addTo(map)
-                    .bindPopup('Your Location').openPopup();
-
-                document.getElementById('locationStatus').textContent = 'Showing road directions to nearest facilities.';
-
-                // Calculate distances
-                const facilitiesWithDistance = dummyFacilities.map(facility => {
-                    const distance = getDistance(latitude, longitude, facility.lat, facility.lng);
-                    return { ...facility, distance };
-                });
-
-                // Sort and get 3 nearest
-                const nearest = facilitiesWithDistance.sort((a, b) => a.distance - b.distance).slice(0, 3);
-
-                // Show routing directions for each
-                nearest.forEach(facility => {
-                    L.Routing.control({
-                        waypoints: [
-                            L.latLng(latitude, longitude),
-                            L.latLng(facility.lat, facility.lng)
-                        ],
-                        routeWhileDragging: false,
-                        draggableWaypoints: false,
-                        addWaypoints: false,
-                        showAlternatives: false,
-                        show: false,
-                        createMarker: () => null,
-                        lineOptions: {
-                            styles: [{ color: '#b4244b', weight: 4 }]
-                        }
-                    }).addTo(map);
-                });
-            },
-            () => {
-                document.getElementById('locationStatus').textContent = 'Location access denied. Showing all facilities.';
-            }
-        );
-    </script>
     <script>
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.getElementById('sidebar');
@@ -236,6 +103,14 @@
         sidebarToggle.addEventListener('click', toggleSidebar);
         overlay.addEventListener('click', toggleSidebar);
     </script>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Leaflet Routing Machine CSS and JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
+<script src="{% static 'js/index.js' %}"></script>
 </body>
 
 </html>
