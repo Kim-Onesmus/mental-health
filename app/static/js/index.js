@@ -317,13 +317,7 @@ const locationStatus = document.getElementById("locationStatus");
 function initRegionOptions() {
   regionSelect.innerHTML = `
     <option value="">All</option>
-    <option value="Nairobi">Nairobi</option>
     <option value="Kisumu">Kisumu</option>
-    <option value="Siaya">Siaya</option>
-    <option value="Homa Bay">Homa Bay</option>
-    <option value="Migori">Migori</option>
-    <option value="Kisii">Kisii</option>
-    <option value="Nyamira">Nyamira</option>
   `;
 }
 
