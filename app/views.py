@@ -25,7 +25,6 @@ def facilities_map_data(request):
             # "constituency": "Kisumu Central",
             # "ward": "Unknown",
         })
-    print("Data", data) 
     return JsonResponse(data, safe=False)
 
     

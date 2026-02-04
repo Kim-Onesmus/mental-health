@@ -151,6 +151,12 @@ function drawRouteToNearest() {
     ],
     addWaypoints: false,
     draggableWaypoints: false,
+    routeWhileDragging: false,
+
+    // 🔥 THESE TWO LINES REMOVE THE SIDEPANE
+    show: false,
+    collapsible: false,
+
     createMarker: () => null,
   }).addTo(map);
 
