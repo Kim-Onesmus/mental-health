@@ -20,13 +20,15 @@ def facilities_map_data(request):
             "operating_days": f.operating_days,
 
             # Optional (add later if you store them)
-            "county": "Kisumu",
-            "subcounty": "Kisumu Central",
-            "constituency": "Kisumu Central",
-            "ward": "Unknown",
+            # "county": "Kisumu",
+            # "subcounty": "Kisumu Central",
+            # "constituency": "Kisumu Central",
+            # "ward": "Unknown",
         })
-
+    print("Data", data) 
     return JsonResponse(data, safe=False)
+
+    
 
 def Index(request):
     return render(request, 'app/home.html')

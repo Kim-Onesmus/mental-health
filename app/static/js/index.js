@@ -5,25 +5,6 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; OpenStreetMap contributors",
 }).addTo(map);
 
-/* ========== Kisumu Central Boundary ========== */
-const kisumuCentralBoundary = [
-  [-0.075, 34.74],
-  [-0.06, 34.77],
-  [-0.08, 34.8],
-  [-0.11, 34.81],
-  [-0.13, 34.79],
-  [-0.12, 34.75],
-  [-0.09, 34.73],
-];
-
-L.polygon(kisumuCentralBoundary, {
-  color: "red",
-  weight: 3,
-  fillOpacity: 0.1,
-})
-  .addTo(map)
-  .bindPopup("Kisumu Central Boundary");
-
 /* ================= ICONS ================= */
 const mentalIcon = L.icon({
   iconUrl:
@@ -81,18 +62,7 @@ function clearRoutes() {
   routeControls = [];
 }
 
-/* ================= FILTER LOGIC ================= */
-function getFilteredFacilities(filters = {}) {
-  return allFacilities.filter((f) => {
-    for (let key in filters) {
-      if (filters[key] && f[key]?.toLowerCase() !== filters[key].toLowerCase())
-        return false;
-    }
-    return true;
-  });
-}
-
-/* ================= RENDER ================= */
+/* ================= RENDER FACILITIES ================= */
 function renderFacilities(facilities) {
   clearMarkers();
   clearRoutes();
@@ -102,7 +72,16 @@ function renderFacilities(facilities) {
 
     const marker = L.marker([f.lat, f.lng], { icon })
       .bindPopup(() => {
-        let html = `<strong>${f.name}</strong><br>${f.ward}`;
+        let html = `
+          <div style="font-family: Arial; line-height:1.5">
+            <strong style="font-size:16px">${f.name}</strong><br>
+            <strong>Operating Time:</strong> ${f.operating_time}<br>
+            <strong>Patient Care:</strong> ${f.patient_care_setting}<br>
+            <strong>Payment:</strong> ${f.modes_of_payment}<br>
+            <strong>Insurance:</strong> ${f.insurance_accepted}<br>
+            <strong>Days:</strong> ${f.operating_days}<br>
+        `;
+
         if (userLocation) {
           const d = getDistanceKm(
             userLocation.lat,
@@ -110,8 +89,10 @@ function renderFacilities(facilities) {
             f.lat,
             f.lng,
           ).toFixed(2);
-          html += `<br><em>${d} km away</em>`;
+          html += `<em>${d} km away</em>`;
         }
+
+        html += `</div>`;
         return html;
       })
       .addTo(map);
@@ -132,16 +113,48 @@ async function loadFacilities() {
       lat: f.lat,
       lng: f.lng,
       type: f.type === "mental_health" ? "mental" : "rehab",
-      county: f.county,
-      subcounty: f.subcounty,
-      constituency: f.constituency,
-      ward: f.ward,
+      ward: f.ward || "N/A",
+      operating_time: f.operating_time || "N/A",
+      patient_care_setting: f.patient_care_setting || "N/A",
+      modes_of_payment: f.modes_of_payment || "N/A",
+      insurance_accepted: f.insurance_accepted || "N/A",
+      operating_days: f.operating_days || "N/A",
     }));
 
     renderFacilities(allFacilities);
+
+    if (userLocation) drawRouteToNearest();
   } catch (err) {
     console.error("Error loading facilities:", err);
   }
+}
+
+/* ================= ROUTE TO NEAREST ================= */
+function drawRouteToNearest() {
+  if (!userLocation || !allFacilities.length) return;
+
+  clearRoutes();
+
+  const nearest = [...allFacilities]
+    .map((f) => ({
+      ...f,
+      distance: getDistanceKm(userLocation.lat, userLocation.lng, f.lat, f.lng),
+    }))
+    .sort((a, b) => a.distance - b.distance)[0];
+
+  if (!nearest) return;
+
+  const rc = L.Routing.control({
+    waypoints: [
+      L.latLng(userLocation.lat, userLocation.lng),
+      L.latLng(nearest.lat, nearest.lng),
+    ],
+    addWaypoints: false,
+    draggableWaypoints: false,
+    createMarker: () => null,
+  }).addTo(map);
+
+  routeControls.push(rc);
 }
 
 /* ================= GEOLOCATION ================= */
@@ -157,7 +170,9 @@ function onLocationSuccess(pos) {
     .openPopup();
 
   map.setView([userLocation.lat, userLocation.lng], 13);
+
   renderFacilities(allFacilities);
+  drawRouteToNearest();
 }
 
 /* ================= INIT ================= */
