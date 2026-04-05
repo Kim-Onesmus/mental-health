@@ -15,7 +15,6 @@ class OrganizationAdmin(UserAdmin):
     list_display = (
         "email",
         "org_name",
-        "contact_person",
         "status",
         "is_active",
         "is_staff",
@@ -39,7 +38,7 @@ class OrganizationAdmin(UserAdmin):
 
     fieldsets = (
         ("Authentication", {"fields": ("email", "password")}),
-        ("Organization Profile", {"fields": ("org_name", "status", "rejection_reason")}),
+        ("Organization Profile", {"fields": ("org_name", "status", "rejection_reason", "reviewed_at", "reviewed_by")}),
         (
             "Contact Details",
             {
@@ -47,6 +46,7 @@ class OrganizationAdmin(UserAdmin):
                     "contact_person",
                     "correspondence_phone",
                     "correspondence_email",
+                    "logo",
                 )
             },
         ),
@@ -54,11 +54,7 @@ class OrganizationAdmin(UserAdmin):
             "Discovery",
             {"fields": ("hear_about_us", "hear_about_us_other")},
         ),
-        (
-            "Review Details",
-            {"fields": ("reviewed_at", "reviewed_by")},
-        ),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
+        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser")}),
         ("Important Dates", {"fields": ("last_login", "date_joined", "updated_at")}),
     )
 

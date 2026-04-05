@@ -115,6 +115,7 @@ class Organization(AbstractBaseUser, PermissionsMixin):
     contact_person       = models.CharField('Contact Person', max_length=150)
     correspondence_phone = models.CharField('Correspondence Number', max_length=30)
     correspondence_email = models.EmailField('Correspondence Email')
+    logo = models.ImageField('Organization Logo', upload_to='organization_logos/', null=True, blank=True)
 
     # ── Discovery ──
     hear_about_us        = models.CharField(

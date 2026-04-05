@@ -6,10 +6,11 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from .forms import OrganizationLoginForm, OrganizationRegistrationForm
 from .models import AdvertiseTier, Facility, RegistrationStatus
-from django.shortcuts import redirect
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from .models import Facility, Organization
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth.hashers import check_password, make_password
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 # ─────────────────────────────────────────────
@@ -23,7 +24,7 @@ def register_view(request):
     login_data = {"email": ""}
 
     if request.method == 'POST':
-        registration_form = OrganizationRegistrationForm(request.POST)
+        registration_form = OrganizationRegistrationForm(request.POST, request.FILES)
         if registration_form.is_valid():
             org = registration_form.save(commit=False)
             org.email = org.email.lower()
@@ -66,7 +67,7 @@ def register_view(request):
 # ─────────────────────────────────────────────
 
 def login_view(request):
-    organizations = Organization.objects.filter(status=RegistrationStatus.APPROVED).count()
+    organizations = Organization.objects.filter(status=RegistrationStatus.APPROVED, is_superuser=False).count()
     if request.user.is_authenticated:
         return redirect('dashboard')
 
@@ -125,17 +126,13 @@ def dashboard_view(request):
     my_application = None
     my_facilities = None
 
+    organizations = Organization.objects.filter(status=RegistrationStatus.APPROVED, is_superuser=False)
     if request.user.is_authenticated:
-        print(f"User email: '{request.user.email}'")  # Debug
-        print(f"User: {request.user}")
         
         my_application = Organization.objects.filter(
             email=request.user.email
         ).first()
-        
-        print(f"My application: {my_application}")  # Debug
-        print(f"All orgs: {Organization.objects.all().values_list('correspondence_email', flat=True)}")  # Debug
-        
+
         if my_application:
             my_facilities = my_application.facilities.all().order_by('-submitted_at')
 
@@ -151,10 +148,9 @@ def dashboard_view(request):
         'my_application': my_application,
         'my_facilities': my_facilities,
         'open_add_facility': request.GET.get('open_add_facility') == '1',
+        'organizations_count': organizations.count(),
+        'organizations': organizations,
     }
-    # print('Context', context)
-
-    print('My Application:', my_application)
 
     return render(request, 'app/dashboard.html', context)
 
@@ -273,9 +269,6 @@ def add_facility(request):
     return redirect("dashboard")
 
 
-from django.http import JsonResponse
-from .models import Facility
-
 
 def facilities_map_data(request):
     org_type = request.GET.get("org_type")
@@ -310,9 +303,9 @@ def facilities_map_data(request):
             "type": f.org_type,
             "youth_type": f.is_youth_org,
             "funding_source": f.funding_source,
-            "year_founded": f.year_founded
+            "year_founded": f.year_founded,
+            "public_email": f.public_email
         })
-        print('data', data)
 
     return JsonResponse(data, safe=False)
 
@@ -337,3 +330,53 @@ def facility_filters(request):
         "youth_types": list(filter(None, youth_types)),
         "funding_sources": list(filter(None, funding_sources)),
     })
+
+
+@require_http_methods(["POST"])
+@csrf_exempt  # Only use this if you handle CSRF differently, see below
+def update_profile(request):
+    try:
+        data = json.loads(request.body)
+        user = request.user
+        
+        user.org_name = data.get('org_name', user.org_name)
+        user.contact_person = data.get('contact_person', user.contact_person)
+        user.email = data.get('email', user.email)
+        user.correspondence_phone = data.get('correspondence_phone', user.correspondence_phone)
+        user.save()
+        
+        return JsonResponse({'success': True, 'message': 'Profile updated'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)}, status=400)
+
+
+@require_http_methods(["POST"])
+@csrf_exempt
+def change_password(request):
+    try:
+        data = json.loads(request.body)
+        user = request.user
+        current_password = data.get('current_password')
+        new_password = data.get('new_password')
+        confirm_new_password = data.get('confirm_new_password')
+        
+        # Check if new password and confirm password match
+        if new_password != confirm_new_password:
+            return JsonResponse({'success': False, 'message': 'New passwords do not match'}, status=400)
+        
+        # Check if current password is correct
+        if not check_password(current_password, user.password):
+            return JsonResponse({'success': False, 'message': 'Current password is incorrect'}, status=400)
+        
+        # Check if new password is not empty
+        if not new_password or len(new_password) < 8:
+            return JsonResponse({'success': False, 'message': 'New password must be at least 8 characters long'}, status=400)
+        
+        user.password = make_password(new_password)
+        user.save()
+        
+        return JsonResponse({'success': True, 'message': 'Password updated successfully'})
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'message': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)}, status=400)

@@ -364,7 +364,7 @@
                         <path
                             d="M4 3a1 1 0 000 2h12a1 1 0 100-2H4zm-1 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm1 4a1 1 0 000 2h8a1 1 0 100-2H4z" />
                     </svg><span class="flex-1">Organizations</span><span
-                        class="text-[10px] font-semibold bg-white/20 text-white px-2 py-0.5 rounded-full">{{ total }}</span></a>
+                        class="text-[10px] font-semibold bg-white/20 text-white px-2 py-0.5 rounded-full">{{ organizations_count }}</span></a>
                 <a href="#" data-tab="map"
                     class="tab flex items-center gap-3 px-3 py-2.5 rounded-xl text-white text-[13px] transition-colors"><svg
                         class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -518,7 +518,7 @@
                             class="stat-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm relative overflow-hidden">
                             <div class="absolute top-0 inset-x-0 h-[3px] bg-primary rounded-t-2xl"></div>
                             <div class="flex items-start justify-between mb-3">
-                                <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Total</p>
+                                <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Facilities</p>
                                 <span class="w-8 h-8 rounded-xl bg-primary/[.07] flex items-center justify-center"><svg
                                         class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
                                         <path
@@ -527,13 +527,13 @@
                             </div>
                             <p class="text-[38px] font-bold text-primary leading-none"
                                 style="font-variant-numeric:tabular-nums">{{ total|default:0 }}</p>
-                            <p class="text-[11.5px] text-gray-400 mt-2">All registered orgs</p>
+                            <p class="text-[11.5px] text-gray-400 mt-2">All registered facilities/branches</p>
                         </div>
                         <div
                             class="stat-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm relative overflow-hidden">
                             <div class="absolute top-0 inset-x-0 h-[3px] bg-emerald-500 rounded-t-2xl"></div>
                             <div class="flex items-start justify-between mb-3">
-                                <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Approved</p>
+                                <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Amount</p>
                                 <span class="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center"><svg
                                         class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
@@ -543,13 +543,13 @@
                             </div>
                             <p class="text-[38px] font-bold text-gray-900 leading-none"
                                 style="font-variant-numeric:tabular-nums">{{ approved_count|default:0 }}</p>
-                            <p class="text-[11.5px] text-gray-400 mt-2">Live on public dashboard</p>
+                            <p class="text-[11.5px] text-gray-400 mt-2">Total MH funding</p>
                         </div>
                         <div
                             class="stat-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm relative overflow-hidden">
                             <div class="absolute top-0 inset-x-0 h-[3px] bg-amber-400 rounded-t-2xl"></div>
                             <div class="flex items-start justify-between mb-3">
-                                <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Pending</p>
+                                <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Persons</p>
                                 <span class="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center"><svg
                                         class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
@@ -559,13 +559,13 @@
                             </div>
                             <p class="text-[38px] font-bold text-gray-900 leading-none"
                                 style="font-variant-numeric:tabular-nums">{{ pending_count|default:0 }}</p>
-                            <p class="text-[11.5px] text-gray-400 mt-2">Awaiting due diligence</p>
+                            <p class="text-[11.5px] text-gray-400 mt-2">Number of Persons reached</p>
                         </div>
                         <div
                             class="stat-card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm relative overflow-hidden">
                             <div class="absolute top-0 inset-x-0 h-[3px] bg-primary rounded-t-2xl"></div>
                             <div class="flex items-start justify-between mb-3">
-                                <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Rejected</p>
+                                <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">Organizations</p>
                                 <span class="w-8 h-8 rounded-xl bg-primary/[.07] flex items-center justify-center"><svg
                                         class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
@@ -574,8 +574,8 @@
                                     </svg></span>
                             </div>
                             <p class="text-[38px] font-bold text-gray-900 leading-none"
-                                style="font-variant-numeric:tabular-nums">{{ rejected_count|default:0 }}</p>
-                            <p class="text-[11.5px] text-gray-400 mt-2">Some with suggested edits</p>
+                                style="font-variant-numeric:tabular-nums">{{ organizations_count|default:0 }}</p>
+                            <p class="text-[11.5px] text-gray-400 mt-2">All registered organizations</p>
                         </div>
                     </div>
 
@@ -624,32 +624,147 @@
                     <div class="fu d1 flex flex-wrap items-center justify-between gap-3">
                         <div>
                             <h2 class="text-[16px] font-bold text-gray-900">Organizations</h2>
-                            <p class="text-[12px] text-gray-400 mt-0.5">Registered mental health stakeholders</p>
+                            <p class="text-[12px] text-gray-400 mt-0.5">Registered mental health organizations</p>
                         </div>
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <button
-                                class="fp on text-[12px] px-3.5 py-1.5 rounded-full border border-secondary text-white bg-secondary">All</button>
-                            <button
-                                class="fp text-[12px] px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-500 hover:border-secondary hover:text-secondary transition-all">NGO</button>
-                            <button
-                                class="fp text-[12px] px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-500 hover:border-secondary hover:text-secondary transition-all">CBO</button>
-                            <button
-                                class="fp text-[12px] px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-500 hover:border-secondary hover:text-secondary transition-all">Network</button>
+                        <div class="relative w-full sm:w-72">
+                        
+                            <input type="text" id="orgSearch" placeholder="Search organizations..."
+                                class="w-full pl-10 pr-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-secondary">
+                        
+                            <!-- Search Icon -->
+                            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        
                         </div>
                     </div>
                 
-                    <!-- Coming Soon Message -->
-                    <div class="fu d2 flex items-center justify-center h-64 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                        <p class="text-gray-400 text-lg font-semibold">🚧 Coming Soon: Organizations Listing 🚧</p>
+                    <!-- Organization Cards -->
+                    <div class="fu d2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+                    
+                        {% for org in organizations %}
+                        <div class="org-card bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
+                            data-name="{{ org.org_name|lower }}">
+                    
+                            <!-- Logo Full Width -->
+                            <div class="w-full h-32 bg-gray-50 flex items-center justify-center overflow-hidden">
+                                {% if org.logo %}
+                                <img src="{{ org.logo.url }}"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                {% else %}
+                                <div class="text-gray-400 text-sm">
+                                    No Logo
+                                </div>
+                                {% endif %}
+                            </div>
+                    
+                            <!-- Content -->
+                            <div class="p-4 text-center">
+                    
+                                <h4 class="text-[13px] font-semibold text-gray-800 line-clamp-2 min-h-[35px]">
+                                    {{ org.org_name }}
+                                </h4>
+                    
+                                <button onclick="openOrgModal(
+                                    '{{ org.org_name }}',
+                                    '{{ org.contact_person }}',
+                                    '{{ org.correspondence_phone }}',
+                                    '{{ org.correspondence_email }}',
+                                    '{% if org.logo %}{{ org.logo.url }}{% endif %}'
+                                )"
+                                    class="mt-3 w-full text-[12px] px-3 py-2 rounded-xl bg-secondary text-white hover:opacity-90 transition">
+                    
+                                    View Organization
+                    
+                                </button>
+                    
+                            </div>
+                    
+                        </div>
+                        {% endfor %}
+                    
                     </div>
                 
+                </div>
+
+                <!-- Organization Modal -->
+                <div id="orgModal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+
+                    <div id="orgModalCard"
+                        class="bg-white w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0">
+
+                        <!-- Header / Logo -->
+                        <div class="relative bg-gradient-to-r from-gray-50 to-gray-100 h-44">
+
+                            <img id="modalLogo" class="absolute inset-0 w-full h-full object-cover opacity-90">
+
+                            <!-- Overlay -->
+                            <div class="absolute inset-0 bg-black/20"></div>
+
+                            <!-- Organization Name -->
+                            <div class="absolute bottom-4 left-6 right-6">
+                                <h3 id="modalName" class="text-xl font-bold text-white leading-tight drop-shadow">
+                                </h3>
+                            </div>
+
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-6">
+
+                            <!-- Info Grid -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 text-sm">
+
+                                <!-- Contact -->
+                                <div class="bg-gray-50 rounded-2xl p-4">
+                                    <p class="text-xs text-gray-400 mb-1">
+                                        Contact Person
+                                    </p>
+                                    <p id="modalContact" class="font-semibold text-gray-800">
+                                    </p>
+                                </div>
+
+                                <!-- Phone -->
+                                <div class="bg-gray-50 rounded-2xl p-4">
+                                    <p class="text-xs text-gray-400 mb-1">
+                                        Phone Number
+                                    </p>
+                                    <p id="modalPhone" class="font-semibold text-gray-800">
+                                    </p>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="bg-gray-50 rounded-2xl p-4 sm:col-span-2">
+                                    <p class="text-xs text-gray-400 mb-1">
+                                        Email Address
+                                    </p>
+                                    <p id="modalEmail" class="font-semibold text-gray-800">
+                                    </p>
+                                </div>
+
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="mt-6 flex justify-end">
+
+                                <button onclick="closeOrgModal()"
+                                    class="px-4 py-2 text-sm rounded-xl border border-gray-200 hover:bg-gray-50">
+                                    Close
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
                 
                 <!-- ── MAP ── -->
                 <div id="page-map" class="page p-4 md:p-6 space-y-4" style="height:calc(100vh - 64px)">
-                    <div class="fu d1 flex flex-wrap items-center justify-between gap-3">
-                        <!-- Map Filters -->
+                    <!-- <div class="fu d1 flex flex-wrap items-center justify-between gap-3">
                         <div class="fu d2 bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
                         
                             <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -678,9 +793,9 @@
                             </div>
                         
                         </div>
-                    </div>
+                    </div> -->
                     <div class="fu d2 rounded-2xl overflow-hidden border border-gray-100 shadow-sm"
-                        style="height:calc(100% - 70px);min-height:400px">
+                        style="height:calc(100% - 70px);min-height:500px">
                         <div id="map" style="height:100%;width:100%;border-radius:1rem"></div>
                     </div>
                 </div>
@@ -688,7 +803,7 @@
                 <!-- ── REPORTS ── -->
                 <div id="page-reports" class="page p-4 md:p-6 space-y-5">
                     <div class="fu d1">
-                        <h2 class="text-[16px] font-bold text-gray-900">Reports</h2>
+                        <h2 class="text-[16px] font-bold text-gray-900">Resources</h2>
                         <p class="text-[12px] text-gray-400 mt-0.5">Platform analytics and summaries</p>
                     </div>
                     <!-- Coming Soon Message -->
@@ -709,16 +824,13 @@
 
                     <!-- Sub-tab buttons -->
                     <div
-                        class="fu d1 flex flex-wrap items-center gap-1 bg-white border border-gray-100 shadow-sm rounded-2xl p-1 w-fit">
+                        class="fu d1 flex flex-wrap items-center gap-1 bg-white border border-gray-100 shadow-sm rounded-2xl p-1 w-fit mx-auto">
                         <button class="stab text-[12.5px] font-semibold px-4 py-2 rounded-xl transition-all"
                             onclick="showSettingsTab('profile')">Profile</button>
-                        <button
-                            class="stab text-[12.5px] font-semibold px-4 py-2 rounded-xl transition-all text-gray-500"
+                        <button class="stab text-[12.5px] font-semibold px-4 py-2 rounded-xl transition-all text-gray-500"
                             onclick="showSettingsTab('application')">My Application</button>
-                        <button
-                            class="stab text-[12.5px] font-semibold px-4 py-2 rounded-xl transition-all text-gray-500"
+                        <button class="stab text-[12.5px] font-semibold px-4 py-2 rounded-xl transition-all text-gray-500"
                             onclick="showSettingsTab('facilities')">My Facilities</button>
-
                     </div>
 
                     <!-- ── PROFILE ── -->
@@ -730,51 +842,59 @@
                             <div class="p-5 space-y-4">
                                 <div class="flex items-center gap-4 pb-4 border-b border-gray-50">
                                     <div
-                                        class="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
-                                        {{ request.user.org_name|default:"U"|slice:":1"|upper }}</div>
+                                        class="w-14 h-14 rounded-2xl flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+                                        {% if request.user.logo %}
+                                            <img src="{{ request.user.logo.url }}" alt="request.user.org_name">
+                                        {% else %}
+                                            {{ request.user.org_name|default:"U"|slice:":1"|upper }}
+                                        {% endif %}
+                                    </div>
                                     <div class="flex-1">
                                         <p class="font-semibold text-gray-900">{{ request.user.org_name }}</p>
                                         <p class="text-[12px] text-gray-400">{{ request.user.email }} · 
                                             {{ request.user.get_status_display }}</p>
                                     </div>
-                                    <button
-                                        class="text-[12.5px] font-semibold text-secondary border border-secondary/30 hover:bg-secondary/5 px-3 py-1.5 rounded-xl transition-colors">Change
-                                        Photo</button>
                                 </div>
+                                <form data-form="profile">
+                                    {% csrf_token %}
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div><label class="field-label">Organization Name</label><input type="text" value="{{ request.user.org_name }}"
+                                    <div><label class="field-label">Organization Name</label><input type="text" name="org_name" value="{{ request.user.org_name }}"
                                             class="field"></div>
-                                    <div><label class="field-label">Contact Person</label><input type="text" value="{{ request.user.contact_person }}"
+                                    <div><label class="field-label">Contact Person</label><input type="text" name="contact_person" value="{{ request.user.contact_person }}"
                                             class="field"></div>
-                                    <div><label class="field-label">Email</label><input type="email"
+                                    <div><label class="field-label">Email</label><input type="email" name="email"
                                             value="{{ request.user.email }}" class="field"></div>
-                                    <div><label class="field-label">Role</label><input type="text"
-                                            value="{{ request.user.get_status_display }}" disabled
-                                            class="field bg-gray-50 text-gray-400 cursor-not-allowed"></div>
+                                    <div><label class="field-label">Correspondence Number:</label><input name="correspondence_phone" type="text"
+                                            value="{{ request.user.correspondence_phone }}"
+                                            class="field"></div>
                                 </div>
-                                <button
+                                <button type="submit"
                                     class="bg-primary hover:bg-secondary text-white text-[13px] font-semibold px-5 py-2.5 rounded-xl transition-colors">Save
                                     Changes
                                 </button>
+                                </form>
                             </div>
                         </div>
                         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                             <div class="px-5 py-4 border-b border-gray-100">
                                 <h3 class="text-[14px] font-bold text-gray-900">Change Password</h3>
                             </div>
+                            <form data-form="password">
+                                {% csrf_token %}
                             <div class="p-5 space-y-4">
-                                <div><label class="field-label">Current Password</label><input type="password"
-                                        placeholder="••••••••" class="field"></div>
+                                <div><label class="field-label">Current Password</label><input name="current_password" type="password"
+                                        placeholder="••••••••" class="field" required></div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div><label class="field-label">New Password</label><input type="password"
-                                            placeholder="••••••••" class="field"></div>
-                                    <div><label class="field-label">Confirm New Password</label><input type="password"
-                                            placeholder="••••••••" class="field"></div>
+                                    <div><label class="field-label">New Password</label><input name="new_password" type="password"
+                                            placeholder="••••••••" class="field" required></div>
+                                    <div><label class="field-label">Confirm New Password</label><input name="confirm_new_password" type="password"
+                                            placeholder="••••••••" class="field" required></div>
                                 </div>
-                                <button
+                                <button type="submit"
                                     class="bg-primary hover:bg-secondary text-white text-[13px] font-semibold px-5 py-2.5 rounded-xl transition-colors">Update
                                     Password</button>
                             </div>
+                            </form>
                         </div>
                     </div>
 
@@ -1601,6 +1721,7 @@
     </div>
 
     <script src="{% static 'js/home.js' %}"></script>
+    <script src="{% static 'js/profile_update.js' %}"></script>
 
 </body>
 

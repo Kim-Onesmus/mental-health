@@ -404,7 +404,7 @@
                             {{ login_form.non_field_errors.0 }}
                         </div>
                         {% endif %}
-                        <form method="post" action="{% url 'login' %}" class="space-y-4">
+                        <form method="post" action="{% url 'login' %}" class="space-y-4" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div>
                                 <label class="field-label">Email Address</label>
@@ -454,7 +454,7 @@
                             {{ registration_form.non_field_errors.0 }}
                         </div>
                         {% endif %}
-                        <form method="post" action="{% url 'register' %}" class="space-y-4">
+                        <form method="post" action="{% url 'register' %}" enctype="multipart/form-data" class="space-y-4">
                             {% csrf_token %}
                             <div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
                                 <div class="col-span-2 lg:col-span-3">
@@ -503,7 +503,7 @@
                                     <p class="text-[11px] text-red-500 mt-1">{{ registration_form.correspondence_phone.errors.0 }}</p>
                                     {% endif %}
                                 </div>
-                                <div>
+                                <div class="col-span-2 lg:col-span-2">
                                     <label class="field-label">Correspondence Email <span
                                             class="text-primary">*</span></label>
                                     <input type="email" name="correspondence_email" placeholder="contact@org.org"
@@ -512,6 +512,19 @@
                                     {% if registration_form and registration_form.correspondence_email.errors %}
                                     <p class="text-[11px] text-red-500 mt-1">
                                         {{ registration_form.correspondence_email.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col-span-2 lg:col-span-1">
+                                    <label class="field-label">
+                                        Organization Logo <span class="text-primary">*</span>
+                                    </label>
+                                
+                                    <input type="file" name="logo" class="field" required>
+                                
+                                    {% if registration_form and registration_form.logo.errors %}
+                                    <p class="text-[11px] text-red-500 mt-1">
+                                        {{ registration_form.logo.errors.0 }}
+                                    </p>
                                     {% endif %}
                                 </div>
                                 <div class="col-span-2 lg:col-span-3">
@@ -529,16 +542,14 @@
                                         <option value="other" {% if registration_form.hear_about_us.value == 'other' %}selected{% endif %}>Other (specify)</option>
                                     </select>
                                     {% if registration_form and registration_form.hear_about_us.errors %}
-                                    <p class="text-[11px] text-red-500 mt-1">{{ registration_form.hear_about_us.errors.0
-                                        }}</p>
+                                    <p class="text-[11px] text-red-500 mt-1">{{ registration_form.hear_about_us.errors.0 }}</p>
                                     {% endif %}
                                     <div id="hear-other-wrap" class="hidden mt-2">
                                         <input id="hear-other-input" name="hear_about_us_other" type="text"
                                             placeholder="Please specify how you heard about us…" class="field"
                                             value="{{ registration_form.hear_about_us_other.value|default:'' }}">
                                         {% if registration_form and registration_form.hear_about_us_other.errors %}
-                                        <p class="text-[11px] text-red-500 mt-1">{{
-                                            registration_form.hear_about_us_other.errors.0 }}</p>
+                                        <p class="text-[11px] text-red-500 mt-1">{{ registration_form.hear_about_us_other.errors.0 }}</p>
                                         {% endif %}
                                     </div>
                                 </div>

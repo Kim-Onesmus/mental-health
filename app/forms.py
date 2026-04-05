@@ -42,6 +42,7 @@ class OrganizationRegistrationForm(forms.ModelForm):
             "contact_person",
             "correspondence_phone",
             "correspondence_email",
+            "logo",
             "hear_about_us",
             "hear_about_us_other",
         ]
@@ -118,3 +119,5 @@ class OrganizationRegistrationForm(forms.ModelForm):
                 self.add_error("password", exc)
 
         return cleaned_data
+
+

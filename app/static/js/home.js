@@ -125,7 +125,7 @@ facilitiesData = data.filter(f =>
     f.county === "Kisumu"
 );
 
-populateFilters(facilitiesData);
+// populateFilters(facilitiesData);
 renderMarkers(facilitiesData);
 
 });
@@ -163,13 +163,13 @@ function renderMarkers(data) {
           ${f.name}
         </p>
         <p style="font-size:11px;color:#6b7280">
-          <span style="font-weight:600">Location: </span> ${f.sub_county}, ${f.county}
-        </p>
-        <p style="font-size:11px;color:#6b7280">
           <span style="font-weight:600">Organization Type: </span> ${f.type}
         </p>
         <p style="font-size:11px;color:#6b7280">
-          <span style="font-weight:600">Year Founded: </span> ${f.year_founded}
+          <span style="font-weight:600">Street Address: </span> ${f.sub_county}, ${f.county}
+        </p>
+        <p style="font-size:11px;color:#6b7280">
+          <span style="font-weight:600">Email: </span> ${f.public_email}
         </p>
       </div>
     `,
@@ -191,69 +191,69 @@ function renderMarkers(data) {
 
 /* ────────────────────── FILTERS ────────────────────── */
 
-function populateFilters(data){
+// function populateFilters(data){
 
-populateSelect("filter-type", unique(data,"org_type"));
-populateSelect("filter-youth", unique(data,"is_youth_org"));
-populateSelect("filter-disability", unique(data,"is_disability_org"));
-populateSelect("filter-female", unique(data,"is_female_led"));
+// populateSelect("filter-type", unique(data,"org_type"));
+// populateSelect("filter-youth", unique(data,"is_youth_org"));
+// populateSelect("filter-disability", unique(data,"is_disability_org"));
+// populateSelect("filter-female", unique(data,"is_female_led"));
 
-}
+// }
 
 
-function populateSelect(id, values){
+// function populateSelect(id, values){
 
-const select = document.getElementById(id);
+// const select = document.getElementById(id);
 
-values.forEach(v=>{
-if(!v) return;
+// values.forEach(v=>{
+// if(!v) return;
 
-const option = document.createElement("option");
-option.value = v;
-option.textContent = v.charAt(0).toUpperCase() + v.slice(1);
+// const option = document.createElement("option");
+// option.value = v;
+// option.textContent = v.charAt(0).toUpperCase() + v.slice(1);
 
-select.appendChild(option);
+// select.appendChild(option);
 
-});
+// });
 
-}
+// }
 
 
 /* ────────────────────── APPLY FILTERS ────────────────────── */
 
-function applyMapFilters(){
+// function applyMapFilters(){
 
-const type = document.getElementById("filter-type").value;
-const youth = document.getElementById("filter-youth").value;
-const disability = document.getElementById("filter-disability").value;
-const female = document.getElementById("filter-female").value;
+// const type = document.getElementById("filter-type").value;
+// const youth = document.getElementById("filter-youth").value;
+// const disability = document.getElementById("filter-disability").value;
+// const female = document.getElementById("filter-female").value;
 
 
-const filtered = facilitiesData.filter(f=>{
+// const filtered = facilitiesData.filter(f=>{
 
-return (
-(!type || f.org_type === type) &&
-(!youth || f.is_youth_org === youth) &&
-(!disability || f.is_disability_org === disability) &&
-(!female || f.is_female_led === female)
+// return (
+// (!type || f.org_type === type) &&
+// (!youth || f.is_youth_org === youth) &&
+// (!disability || f.is_disability_org === disability) &&
+// (!female || f.is_female_led === female)
 
-);
+// );
 
-});
+// });
 
-renderMarkers(filtered);
+// renderMarkers(filtered);
 
-}
+// }
 
 
 /* ────────────────────── RESET ────────────────────── */
 
-function resetMapFilters(){
+// function resetMapFilters(){
 
-document.querySelectorAll("#page-map select").forEach(s=>s.value="");
-renderMarkers(facilitiesData);
+// document.querySelectorAll("#page-map select").forEach(s=>s.value="");
+// renderMarkers(facilitiesData);
 
-}
+// }
 
 
 /* ────────────────────── EVENTS ────────────────────── */
